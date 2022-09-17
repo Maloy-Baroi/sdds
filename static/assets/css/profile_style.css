@@ -1,0 +1,9 @@
+.img-responsive {
+  width: 100%;
+  height: auto;
+}
+
+#full_name {
+  color: #000000;
+  font-weight: bold;
+}
