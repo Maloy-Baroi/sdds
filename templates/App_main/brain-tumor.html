@@ -1,0 +1,86 @@
+{% extends 'App_main/base.html' %}
+{% block main %}
+<a class="btn btn-primary" href="{% url 'App_main:brain-tumor-more-specifically' %}">
+    Predict By Image Uploading
+  </a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+<script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+<script type="text/javascript">
+  // Classifier Variable
+  let classifier;
+  // Model URL
+  {% comment %} let imageModelURL = 'https://teachablemachine.withgoogle.com/models/ka1x1J8cQ/'; {% endcomment %}
+  let imageModelURL = 'https://teachablemachine.withgoogle.com/models/B2fc-vdis/';
+  
+  // Video
+  let video;
+  let flippedVideo;
+  // To store the classification
+  let label = "Not specified";
+
+  // Load the model first
+  function preload() {
+    classifier = ml5.imageClassifier(imageModelURL + 'model.json');
+  }
+
+  function setup() {
+    let myCanvas = createCanvas(720, 500);
+      myCanvas.center();
+      myCanvas.style('margin-top', '60px');
+      myCanvas.style('margin-left', '100px');
+    // Create the video
+    video = createCapture(VIDEO);
+    video.size(720, 470);
+    video.hide();
+
+    flippedVideo = ml5.flipImage(video);
+    // Start classifying
+    classifyVideo();
+  }
+
+  function draw() {
+    background(0);
+    // Draw the video
+    image(flippedVideo, 0, 0);
+
+    // Draw the label
+    fill(255);
+    textSize(32);
+    textAlign(CENTER);
+    text(label, width / 2, height - 4);
+  }
+
+  // Get a prediction for the current video frame
+  function classifyVideo() {
+    flippedVideo = ml5.flipImage(video)
+    classifier.classify(flippedVideo, gotResult);
+    flippedVideo.remove();
+  }
+
+  // When we get a result
+  function gotResult(error, results) {
+    // If there is an error
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    else {
+      // The results are in an array ordered by confidence.
+      // console.log(results[0]);
+      label = results[0].label;
+      // Classifiy again!
+      classifyVideo();
+    }
+  }
+</script>
+{% endblock %}
+
+{% block active_script %}
+dashboard.classList.remove('active');
+covid19.classList.remove('active');
+brainTumor.classList.add('active');
+heartDisease.classList.remove('active');
+kidneyDisease.classList.remove('active');
+{% endblock %}

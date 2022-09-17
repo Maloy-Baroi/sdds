@@ -1,0 +1,133 @@
+{% extends "App_main/base.html" %}
+{% block main %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div class="container" style="padding: 50px;">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <form method="post" id="heart-disease-detector-form">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <label for="gender-id">Gender: </label>
+                    <select class="form-control" name="gender" id="gender-id">
+                        <option value="2">Male</option>
+                        <option value="1">Female</option>
+                    </select>
+
+                    <label for="age-id">Age: </label>
+                    <input type="text" class="form-control" name="yr" id="age-id" placeholder="Age">
+
+                    <label for="heigt-id">Height: </label>
+                    <input type="text" class="form-control" name="height" id="height-id" placeholder="Height">
+                    
+                    <label for="weigt-id">Weight: </label>
+                    <input type="text" class="form-control" name="weight" id="weight-id" placeholder="Weight">
+                    
+                    <label for="systolic-bp-id">Systolic blood pressure: </label>
+                    <input type="text" class="form-control" name="ap_hi" id="systolic-bp-id" placeholder="Systolic blood pressure">
+                    
+                    <label for="Diastolic-bp-id">Diastolic blood Pressure: </label>
+                    <input type="text" class="form-control" name="ap_lo" id="diastolic-bp-id" placeholder="Diastolic Blood Pressure">
+
+                    <label for="cholesterol-id">Cholesterol: </label>
+                    <select class="form-control" name="cholesterol" id="cholesterol-id">
+                        <option value="1">Normal</option>
+                        <option value="2">Above Normal</option>
+                        <option value="3">Well Above Normal</option>
+                    </select>
+
+                    <label for="glucose-id">Glucose: </label>
+                    <select class="form-control" name="glucose" id="glucose-id">
+                        <option value="1">Normal</option>
+                        <option value="2">Above Normal</option>
+                        <option value="3">Well Above Normal</option>
+                    </select>
+
+                    <label for="smoke-id">Smoke: </label>
+                    <select class="form-control" name="smoke" id="smoke-id">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    
+                    <label for="alco-id">Alcohol: </label>
+                    <select class="form-control" name="alco" id="alco-id">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    
+                    <label for="active-id">Phsical Excercise (Regularly): </label>
+                    <select class="form-control" name="active" id="active-id">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+
+                    <div class="form-group mt-4">
+                        <button class="btn btn-primary" id="submitted" type="submit">
+                            Submit
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</div>
+<script>
+    $(document).on('submit', '#heart-disease-detector-form', function (e) {
+        var formData = {
+            gender: $("#gender-id").val(),
+            height: $("#height-id").val(),
+            weight: $("#weight-id").val(),
+            ap_hi: $("#systolic-bp-id").val(),
+            ap_lo: $("#diastolic-bp-id").val(),
+            cholesterol: $("#cholesterol-id").val(),
+            gluc: $("#glucose-id").val(),
+            smoke: $("#smoke-id").val(),
+            alco: $("#alco-id").val(),
+            active: $("#active-id").val(),
+            yr: $("#age-id").val(),
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        };
+        console.log(formData);
+        e.preventDefault();
+        $.ajax({
+            type: 'Post',
+            url: '/heart-disease-detector/',
+            data: formData,
+            success: function (data) {
+                console.log(data['result']);
+                if (data['result'] === 'Positive') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'You have heart disease. Please contact a doctor immediately.',
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                            hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        },
+                        footer: '<a href="{% url 'App_main:heart-disease-detector-better-page' %}">Do you want better result?</a>'
+                    });
+                }
+                else if (data['result'] === 'Negative') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Congratulations!',
+                        text: "You don't have any heart disease now.",
+                    })
+                }
+            }
+        })
+    });
+</script>
+{% endblock %}
+{% block active_script %}
+dashboard.classList.remove('active');
+covid19.classList.remove('active');
+brainTumor.classList.remove('active');
+heartDisease.classList.add('active');
+kidneyDisease.classList.remove('active');
+{% endblock %}
+

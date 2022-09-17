@@ -1,0 +1,83 @@
+{% extends "App_main/base.html" %}
+{% block main %}
+<div class="container">
+    <div class='row'>
+        <div class="row justify-content-center align-items-center g-2">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <form method="post" enctype="multipart/form-data" class="mb-5">
+                    {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id-full_name" class="form-label">Full Name</label>
+                    <input type="text" name="full_name" id="id_full_name" class="form-control" placeholder="Full Name" aria-describedby="helpId">
+                    <label for="id_dob" class="form-label">Date of birth</label>
+                    <input type="date" name="dob" id="id_dob" class="form-control" placeholder="Full Name" aria-describedby="helpId">
+                    <label for="id_sex" class="form-label">Sex</label>
+                    <select class="form-control" name="sex" id="id_sex">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                    </select>
+                    <label for="id_hyper" class="form-label">Hyper-Tension</label>
+                    <select class="form-control" name="hyper_tension" id="id_hyper">
+                    <option value="1">
+                        Yes
+                    </option>
+                    <option value="0">
+                        No
+                    </option>
+                    </select>
+                    <label for="id_diabetics" class="form-label">Diabetics</label>
+                    <select class="form-control" name="diabetics" id="id_diabetics">
+                    <option value="1">
+                        Yes
+                    </option>
+                    <option value="0">
+                        No
+                    </option>
+                    </select>
+                    <label for="id_asthma" class="form-label">Asthma</label>
+                    <select class="form-control" name="asthma" id="id_asthma">
+                    <option value="1">
+                        Yes
+                    </option>
+                    <option value="0">
+                        No
+                    </option>
+                    </select>
+                    <label for="id_smoking" class="form-label">Smoking</label>
+                    <select class="form-control" name="Smoking" id="id_smoking">
+                    <option value="1">
+                        Yes
+                    </option>
+                    <option value="0">
+                        No
+                    </option>
+                    </select>
+                    <label for="id_alchohol" class="form-label">Alchohol Consumption</label>
+                    <select class="form-control" name="alchohol" id="id_alchohol">
+                    <option value="1">
+                        Yes
+                    </option>
+                    <option value="0">
+                        No
+                    </option>
+                    </select>
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" name="address" id="address" aria-describedby="helpId" placeholder="Your Address">
+                    <label for="profile-picture" class="form-label">Profile Picture</label>
+                    <input type="file" class="form-control" name="profile_picture" id="profile-picture" aria-describedby="helpId" placeholder="Your Photo">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary">
+                        Setup
+                    </button>
+                </div>
+            </form>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

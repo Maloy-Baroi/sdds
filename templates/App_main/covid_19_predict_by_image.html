@@ -1,0 +1,72 @@
+{% extends "App_main/base.html" %}
+{% block main %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div class="container" style="padding: 50px;">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <form action="{% url 'App_main:covid-19-predict-by-image-prediction' %}" 
+                method="post" enctype="multipart/form-data" id="covid-19-predict-form">
+            {% comment %} <form method="post" action="{% url 'App_main:covid-19-predict-by-image-prediction' %}" enctype="multipart/form-data"> {% endcomment %}
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <div class="mb-3">
+                      <label for="" class="form-label">Image Input</label>
+                      <input type="file"
+                        class="form-control" name="xray_image" id="id-xray-image" aria-describedby="helpId" placeholder="Input A covid 19 x-ray Image">
+                      <small id="helpId" class="form-text text-muted">
+                        This XRay image will be saved to your profile.
+                    </small>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button class="btn btn-primary" id="submitted" type="submit">
+                            Upload
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-4">
+            <img src="{{ patientTestedResult.covid_19.url }}" alt="Covide 19 saved result image">
+        </div>
+        <div class="col-md-4 text-center">
+            {% if patientTestedResult.covid_19_result == 'Positive' %}
+                <h2 class="text-danger">
+                    Previous result
+                </h2>
+                <br>
+                <h5 class="text-danger">
+                    {{ patientTestedResult.covid_19_result }}
+                </h5>
+            {% else %}
+                <h2 class="text-success">
+                    Previous result
+                </h2>
+                <br>
+                <h5 class="text-success">
+                    {{ patientTestedResult.covid_19_result }}
+                </h5>
+            {% endif %}
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block active_script %}
+dashboard.classList.remove('active');
+covid19.classList.add('active');
+brainTumor.classList.remove('active');
+heartDisease.classList.remove('active');
+kidneyDisease.classList.remove('active');
+{% endblock %}
+
